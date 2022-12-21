@@ -15,6 +15,7 @@ LABELS = {0: 'T-shirt/top', 1: 'Trouser', 2: 'Pullover', 3: 'Dress', 4: 'Coat',
 
 app = FastAPI()
 
+
 handler = Mangum(app)
 INTR = Interpreter('model.tflite')
 
@@ -62,7 +63,6 @@ class Result(BaseModel):
     category: str
     confs: List[Dict] = []
 
-
 @app.post("/image")
 async def get_image(file: UploadFile):
     image = process(file)
@@ -82,7 +82,4 @@ async def get_image(file: UploadFile):
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to Clothesifier API"}
-
-
-
+    return {'message':['Welcome to Clothesifier API', 'Git Page: https://github.com/AndrewStaus/Clothesifier', 'Website:']}
