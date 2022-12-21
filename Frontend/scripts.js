@@ -4,7 +4,7 @@ async function selectImage() {
   const photoField = fileSelect.files[0];
   const dataUri = await dataUriFromFormField(photoField);
   
-  const img = document.createElement('img');
+  const largeImage = document.createElement('img');
   largeImage.addEventListener('load', () => {
     const resizedDataUri = resizeImage(largeImage, 300);
     document.querySelector('#img-preview').src = resizedDataUri;
@@ -38,6 +38,7 @@ function resizeImage (largeImage, wantedWidth) {
 }
 
 async function uploadFile(file) {
+  clearResults();
   var $alert = $('.alert');
   let formData = new FormData();
   formData.append("filename", 'image')
@@ -63,8 +64,7 @@ async function uploadFile(file) {
 function clearResults () {
   var table = document.getElementById("table");
   $("#table").find("tr:not(:first)").remove();
-  document.getElementById('result').innerHTML = 'Loading results...'
-
+  document.getElementById('result').innerHTML = 'Loading results...';
 }
 
 function updateFileName(input) {
