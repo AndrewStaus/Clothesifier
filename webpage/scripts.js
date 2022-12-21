@@ -64,14 +64,6 @@ function clearResults () {
   document.getElementById('result').innerHTML = 'Loading results...';
 }
 
-function updateFileName(input) {
-  if (input.files && input.files[0]) {
-    document.getElementById('fileName').innerText = input.files[0].name;
-  } else {
-    document.getElementById('fileName').innerText = 'Select Image';
-  }
-}
-
 function updateTable(object){
   var table = document.getElementById("table");
   $("#table").find("tr:not(:first)").remove();
