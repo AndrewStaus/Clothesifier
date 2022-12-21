@@ -29,8 +29,18 @@ for(property in object){
 
 async function uploadFile() {
   var $alert = $('.alert');
-  let formData = new FormData();           
-  formData.append("file", fileSelect.files[0]);
+  let formData = new FormData();
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = 28;
+  canvas.height = 28;
+
+  ctx.drawImage(fileSelect.files[0], 0, 0, canvas.width, canvas.height);
+  const imageBlob = canvas.toBlob();
+
+  formData.append("file", imageBlob);
   $.ajax('https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on.aws/image', {
       method: 'POST',
       data: formData,
