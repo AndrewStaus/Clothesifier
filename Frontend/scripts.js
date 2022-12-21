@@ -39,6 +39,7 @@ async function uploadFile() {
 
   ctx.drawImage(fileSelect.files[0], 0, 0, canvas.width, canvas.height);
   const imageBlob = canvas.toBlob();
+  console.log(imageBlob.width)
 
   formData.append("file", imageBlob);
   $.ajax('https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on.aws/image', {
