@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Clothesifier</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles.css">
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                </svg>
+                Clothesifier
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Source</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Notebook</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">API</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="alert alert-danger collapse" role="alert">
+            <strong>Error</strong>
+            </br>Something went wrong when uploading the file.
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-4">
+
+                    <div class="text-center border bg-light mb-3">
+                        <img id="fileDisplay" class="img-fluid", src="shirt.svg", alt="Upload Image" />
+                    </div>
+
+                    <div class="custom-file">
+                        <input class="custom-file-input" id="fileSelect" type="file" accept="image/gif, image/jpeg, image/png" onchange="readURL(this); uploadFile();" />
+                        <label class="custom-file-label" id="fileName" for="fileSelect">Select Image</label>
+                    </div>
+
+                </div>
+                <div class="col-8">
+
+                    <div class = 'card text-light bg-dark mb-3'>
+                        <div class="card-body">
+                            <h5 class="card-title">Classification:</h5>
+                            <h3 id="result" class="card-text">Select an image to classify.</h3>
+                        </div>
+                    </div>
+
+                    <table id="table" class="table table-light">
+                        <thead  class="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Confidence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                      
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.2.js"  integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4="  crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="scripts.js"></script>
+    </body>
+</html>

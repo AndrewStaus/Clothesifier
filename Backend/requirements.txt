@@ -1,0 +1,11 @@
+# pip install -r requirements.txt --upgrade
+# pip install --extra-index-url https://google-coral.github.io/py-repo tflite-runtime --upgrade
+
+fastapi
+pydantic
+numpy
+mangum
+Pillow
+python-multipart
+uvicorn
+tflite-runtime
