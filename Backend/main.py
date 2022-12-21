@@ -1,5 +1,5 @@
 from tflite_runtime.interpreter import Interpreter
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, Form, UploadFile, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -8,12 +8,15 @@ from mangum import Mangum
 from PIL import Image
 from PIL.ImageOps import invert
 import numpy as np
+import base64
 import io
 
 LABELS = {0: 'T-shirt/top', 1: 'Trouser', 2: 'Pullover', 3: 'Dress', 4: 'Coat',
           5: 'Sandal',      6: 'Shirt',   7: 'Sneaker',  8: 'Bag',   9: 'Ankle boot'}
 
 app = FastAPI()
+
+
 handler = Mangum(app)
 INTR = Interpreter('model.tflite')
 
@@ -30,8 +33,8 @@ def predict(interpreter, image):
     scores = interpreter.get_tensor(output_details['index'])[0]
     return scores
 
-def process(file):
-    content = file.file.read()
+def process(content):
+
     image = Image.open(io.BytesIO(content))
     # pad image to be square
     width, height = image.size
@@ -62,22 +65,27 @@ class Result(BaseModel):
     confs: List[Dict] = []
 
 @app.post("/image")
-async def get_image(file: UploadFile):
-    image = process(file)
-    print
-    pred = predict(INTR, image)
-    category = LABELS[pred.argmax()]
+async def get_image(filename: str = Form(...), filedata: str = Form(...)):
+    try:
+        image_as_bytes = str.encode(filedata)  # convert string to bytes
+        img_recovered = base64.b64decode(image_as_bytes)  # decode base64string
+        image = process(img_recovered)
+        
+        pred = predict(INTR, image)
+        category = LABELS[pred.argmax()]
 
-    confs = []
-    for i, confidence in enumerate(pred):
-        d = {}
-        d["name"] = LABELS[i]
-        d["conf"] = round(confidence * 100, 2)
-        confs.append(d)
-    confs.sort(key=lambda x: -x['conf'])
-    json = jsonable_encoder(Result(category=category, confs=confs))
-    return JSONResponse(content=json)
-
+        confs = []
+        for i, confidence in enumerate(pred):
+            d = {}
+            d["name"] = LABELS[i]
+            d["conf"] = round(confidence * 100, 2)
+            confs.append(d)
+        confs.sort(key=lambda x: -x['conf'])
+        json = jsonable_encoder(Result(category=category, confs=confs))
+        return JSONResponse(content=json)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+        
 @app.get("/")
 def root():
     return {'message':['Welcome to Clothesifier API', 'Git Page: https://github.com/AndrewStaus/Clothesifier', 'Website:']}

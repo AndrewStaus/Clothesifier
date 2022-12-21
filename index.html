@@ -45,13 +45,14 @@
                 <div class="col-4">
 
                     <div class="text-center border bg-light mb-3">
-                        <img id="fileDisplay" class="img-fluid", src="Frontend/shirt.svg", alt="Upload Image" />
+                        <img id="img-preview" class="img-fluid", src="Frontend/shirt.svg", alt="Image Preview" />
                     </div>
 
-                    <div class="custom-file">
-                        <input class="custom-file-input" id="fileSelect" type="file" accept="image/gif, image/jpeg, image/png" onchange="readURL(this); uploadFile();" />
+                    <form id="my-form" action="" method="post" class="custom-file" r>
+                        <input type="file" name="photo"  id="fileSelect" accept="image/*" onchange="selectImage(); updateFileName(this);" />
                         <label class="custom-file-label" id="fileName" for="fileSelect">Select Image</label>
-                    </div>
+                        <!-- <button type="submit" class ="custom-button" for="fileSelect">Upload</button> -->
+                    </form>
 
                 </div>
                 <div class="col-8">
