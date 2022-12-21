@@ -1,43 +1,39 @@
 const form = document.querySelector('#my-form');
 
 async function selectImage() {  
-  // Get data URI of the selected image
   const photoField = fileSelect.files[0];
   const dataUri = await dataUriFromFormField(photoField);
   
-  const imgEl = document.createElement('img');
-  imgEl.addEventListener('load', () => {
-    const resizedDataUri = resizeImage(imgEl, 300);
+  const img = document.createElement('img');
+  largeImage.addEventListener('load', () => {
+    const resizedDataUri = resizeImage(largeImage, 300);
     document.querySelector('#img-preview').src = resizedDataUri;
     base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
     uploadFile(base64String)
   });
-  imgEl.src = dataUri;
+  largeImage.src = dataUri;
 }
-
 
 function dataUriFromFormField (field) {
   return new Promise((resolve) => {
     const reader = new FileReader();
-    
     reader.addEventListener('load', () => {
       resolve(reader.result);
     });
-    
     reader.readAsDataURL(field);
   });
 }
 
-function resizeImage (imgEl, wantedWidth) {
+function resizeImage (largeImage, wantedWidth) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  const aspect = imgEl.width / imgEl.height;
+  const aspect = largeImage.width / largeImage.height;
 
   canvas.width = wantedWidth;
   canvas.height = wantedWidth / aspect;
 
-  ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(largeImage, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL();
 }
 
@@ -62,6 +58,13 @@ async function uploadFile(file) {
           $alert.show();
           }
   });
+}
+
+function clearResults () {
+  var table = document.getElementById("table");
+  $("#table").find("tr:not(:first)").remove();
+  document.getElementById('result').innerHTML = 'Loading results...'
+
 }
 
 function updateFileName(input) {
