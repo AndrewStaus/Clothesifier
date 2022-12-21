@@ -1,17 +1,15 @@
-const form = document.querySelector('#my-form');
-
 async function selectImage() {  
   const photoField = fileSelect.files[0];
   const dataUri = await dataUriFromFormField(photoField);
   
-  const largeImage = document.createElement('img');
-  largeImage.addEventListener('load', () => {
-    const resizedDataUri = resizeImage(largeImage, 380);
+  const fullImage = document.createElement('img');
+  fullImage.addEventListener('load', () => {
+    const resizedDataUri = resizeImage(fullImage, 380);
     document.querySelector('#img-preview').src = resizedDataUri;
     base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
     uploadFile(base64String)
   });
-  largeImage.src = dataUri;
+  fullImage.src = dataUri;
 }
 
 function dataUriFromFormField (field) {
@@ -24,16 +22,15 @@ function dataUriFromFormField (field) {
   });
 }
 
-function resizeImage (largeImage, wantedWidth) {
+function resizeImage (fullImage, wantedWidth) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-
-  const aspect = largeImage.width / largeImage.height;
+  const aspect = fullImage.width / fullImage.height;
 
   canvas.width = wantedWidth;
   canvas.height = wantedWidth / aspect;
 
-  ctx.drawImage(largeImage, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(fullImage, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL();
 }
 
@@ -73,7 +70,6 @@ function updateFileName(input) {
   } else {
     document.getElementById('fileName').innerText = 'Select Image';
   }
-
 }
 
 function updateTable(object){
