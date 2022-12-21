@@ -6,7 +6,7 @@ async function selectImage() {
   
   const largeImage = document.createElement('img');
   largeImage.addEventListener('load', () => {
-    const resizedDataUri = resizeImage(largeImage, 300);
+    const resizedDataUri = resizeImage(largeImage, 380);
     document.querySelector('#img-preview').src = resizedDataUri;
     base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
     uploadFile(base64String)
