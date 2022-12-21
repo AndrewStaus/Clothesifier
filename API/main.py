@@ -5,8 +5,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List, Dict
 from mangum import Mangum
-from PIL import Image
 from PIL.ImageOps import invert
+from PIL import Image
 import numpy as np
 import base64
 import io
