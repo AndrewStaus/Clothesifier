@@ -11,21 +11,31 @@ import numpy as np
 import base64
 import io
 
-INTR = Interpreter('model.tflite')
-LABELS = {0: 'T-shirt/top', 1: 'Trouser', 2: 'Pullover', 3: 'Dress', 4: 'Coat',
-          5: 'Sandal',      6: 'Shirt',   7: 'Sneaker',  8: 'Bag',   9: 'Ankle boot'}
+LABELS = [
+    'T-shirt/top',  # 0
+    'Trouser',      # 1
+    'Pullover',     # 2
+    'Dress',        # 3
+    'Coat',         # 4
+    'Sandal',       # 5
+    'Shirt',        # 6
+    'Sneaker',      # 7
+    'Bag',          # 8
+    'Ankle boot'    # 9
+    ]
 
+interpreter = Interpreter('model.tflite')
 app = FastAPI()
 handler = Mangum(app)
 
-def set_input_tensor(interpreter, image):
+def _set_input_tensor(interpreter, image):
     interpreter.allocate_tensors()
     tensor_index = interpreter.get_input_details()[0]['index']
     input_tensor = interpreter.tensor(tensor_index)()[0]
     input_tensor[:, :] = image
 
 def predict(interpreter, image):
-    set_input_tensor(interpreter, image)
+    _set_input_tensor(interpreter, image)
     interpreter.invoke()
     output_details = interpreter.get_output_details()[0]
     scores = interpreter.get_tensor(output_details['index'])[0]
@@ -34,25 +44,27 @@ def predict(interpreter, image):
 def process(content):
 
     image = Image.open(io.BytesIO(content))
+    image = image.convert('L') # convert to black and white
+    
     # pad image to be square
+    pad_color = int(np.argmax(np.bincount(np.array(image).flatten())))
     width, height = image.size
     if width == height:
         square = image
     elif width > height:
-        square = Image.new(image.mode, (width, width), (255,255,255))
+        square = Image.new(image.mode, (width, width), (pad_color))
         square.paste(image, (0, (width - height) // 2))
     else:
-        square = Image.new(image.mode, (height, height), (255,255,255))
+        square = Image.new(image.mode, (height, height), (pad_color))
         square.paste(image, ((height - width) // 2, 0))
     image = square
 
     image = image.resize((28,28)) # resize to 28 by 28
-    image = image.convert('L') # convert to black and white
     image = invert(image) # invert color
 
     image = np.array(image) # convert to numpy array
-    image = image / 255 # normalize values to be between 0 and 1
-    image = (image-np.min(image)) / (np.max(image)-np.min(image)) # maximize contrast
+    image = image - image.min() # maximize contrast
+    image = image / image.max() # normalize values to be between 0 and 1
     image = np.reshape(image, (28, 28, 1)) # reshape
 
     return image
@@ -69,7 +81,7 @@ async def get_image(filename: str = Form(...), filedata: str = Form(...)):
         img_recovered = base64.b64decode(image_as_bytes)  # decode base64string
         image = process(img_recovered)
         
-        pred = predict(INTR, image)
+        pred = predict(interpreter, image)
         category = LABELS[pred.argmax()]
 
         confs = []
