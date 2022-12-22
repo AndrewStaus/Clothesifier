@@ -1,7 +1,9 @@
-async function selectImage() {  
+const apiUrl = 'https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on.aws'
+
+async function selectImage () {  
   const photoField = fileSelect.files[0];
   const dataUri = await dataUriFromFormField(photoField);
-  
+
   const fullImage = document.createElement('img');
   fullImage.addEventListener('load', () => {
     const resizedDataUri = resizeImage(fullImage, 380);
@@ -22,26 +24,26 @@ function dataUriFromFormField (field) {
   });
 }
 
-function resizeImage (fullImage, wantedWidth) {
+function resizeImage (fullImage, newWidth) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const aspect = fullImage.width / fullImage.height;
 
-  canvas.width = wantedWidth;
-  canvas.height = wantedWidth / aspect;
+  canvas.width = newWidth;
+  canvas.height = newWidth / aspect;
 
   ctx.drawImage(fullImage, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL();
 }
 
-async function uploadFile(file) {
+async function uploadFile (base64String) {
   clearResults();
   var $alert = $('.alert');
   let formData = new FormData();
   formData.append("filename", 'image')
-  formData.append("filedata", file)
+  formData.append("filedata", base64String)
 
-  $.ajax('https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on.aws/image', {
+  $.ajax(concat(apiUrl, '/image'), {
       method: 'POST',
       data: formData,
       processData: false,
@@ -59,7 +61,6 @@ async function uploadFile(file) {
 }
 
 function clearResults () {
-  var table = document.getElementById("table");
   $("#table").find("tr:not(:first)").remove();
   document.getElementById('result').innerHTML = 'Loading results...';
 }
