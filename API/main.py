@@ -52,7 +52,7 @@ def process(content):
 
     image = np.array(image) # convert to numpy array
     image = image / 255 # normalize values to be between 0 and 1
-    image = (image-np.min(image)) / (np.max(image)-np.min(image))
+    image = (image-np.min(image)) / (np.max(image)-np.min(image)) # maximize contrast
     image = np.reshape(image, (28, 28, 1)) # reshape
 
     return image
