@@ -25,7 +25,6 @@ const chart = new Chart(document.getElementById("chart"), {
     ]
   },
   options: {
-    title: {display: true},
     legend: {position: 'bottom'},
   }
 });
