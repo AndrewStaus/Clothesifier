@@ -104,7 +104,7 @@ class Result(BaseModel):
     confs: List[Dict] = []
 
 @app.post("/image")
-async def post_image(filename: str = Form(...), filedata: str = Form(...)):
+async def post_image(filedata: str = Form(...)):
     '''## Post Image
 
     The normal API endpoint.  Accepts a Base64 encoded image file of a piece of clothing
@@ -138,13 +138,13 @@ async def post_image(filename: str = Form(...), filedata: str = Form(...)):
         }
         
     ### Arguments:
-        - filename -- The name of the file
         - filedata -- Base64 encoded string containing the file data
 
     ### Returns:
         - JSON formatted predictions {'category':str, 'confs':[{str:float}]}
     
     ### Exception
+        - Raise HTTPException
     '''
 
     try:
@@ -178,7 +178,7 @@ async def post_image(filename: str = Form(...), filedata: str = Form(...)):
 def get_root():
     '''## Get Root
 
-    Returns a welcome message when a get request is recieved on the root endpoint.
+    Returns a welcome message when a get request is received on the root endpoint.
     This is a simple way to check to see if the API is running.
 
     ### Returns:
