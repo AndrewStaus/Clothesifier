@@ -1,17 +1,24 @@
 const apiUrl = 'https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on.aws'
 
-async function selectImage () {  
-  const photoField = fileSelect.files[0];
-  const dataUri = await dataUriFromFormField(photoField);
+async function selectImage () {
+  var $alert = $('.alert');
+  $alert.hide();
+  try{
+    const photoField = fileSelect.files[0];
+    const dataUri = await dataUriFromFormField(photoField);
+  
+    const fullImage = document.createElement('img');
+    fullImage.addEventListener('load', () => {
+      const resizedDataUri = resizeImage(fullImage, 380);
+      document.querySelector('#img-preview').src = resizedDataUri;
+      base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
+      uploadFile(base64String)
+    });
+    fullImage.src = dataUri;
+  } catch (err) {
+    $alert.show();
+  }
 
-  const fullImage = document.createElement('img');
-  fullImage.addEventListener('load', () => {
-    const resizedDataUri = resizeImage(fullImage, 380);
-    document.querySelector('#img-preview').src = resizedDataUri;
-    base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
-    uploadFile(base64String)
-  });
-  fullImage.src = dataUri;
 }
 
 function dataUriFromFormField (field) {
@@ -40,7 +47,6 @@ async function uploadFile (base64String) {
   clearResults();
   var $alert = $('.alert');
   let formData = new FormData();
-  // formData.append("filename", 'image')
   formData.append("filedata", base64String)
 
   $.ajax(apiUrl + '/image', {
@@ -49,13 +55,13 @@ async function uploadFile (base64String) {
       processData: false,
       contentType: false,
               
-      success: function (data) {
-          $alert.hide();
+      success: function (response) {
           document.getElementById('result').innerHTML = data.category
-          updateTable(data.confs)
+          updateTable(response.confs)
           },
-      error: function () {
-          $alert.show();
+      error: function (response) {
+          console.log(response)
+          throw 'Failed to upload image'
           }
   });
 }
