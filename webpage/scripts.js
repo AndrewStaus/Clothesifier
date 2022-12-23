@@ -2,6 +2,34 @@ const apiUrl = 'https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on
 const $alert = $('.alert');
 const alertMessage = document.getElementById('alert-message')
 
+const chart = new Chart(document.getElementById("chart"), {
+  type: 'polarArea',
+  data: {
+    labels: [],
+    datasets: [
+      {
+        backgroundColor: [
+          "rgba(51,122,183,0.6)",
+          "rgba(92,184,92,0.6)",
+          "rgba(217,83,79,0.6)",
+          "rgba(91,192,222,0.6)",
+          "rgba(240,173,78,0.6)",
+          "rgba(51,122,183,0.6)",
+          "rgba(92,184,92,0.6)",
+          "rgba(217,83,79,0.6)",
+          "rgba(91,192,222,0.6)",
+          "rgba(240,173,78,0.6)",
+
+        ],
+      }
+    ]
+  },
+  options: {
+    title: {display: true},
+    legend: {position: 'bottom'},
+  }
+});
+
 async function selectImage () {
   const photoField = fileSelect.files[0];
   try{
@@ -67,7 +95,7 @@ async function uploadFile (base64String) {
               
       success: function (response) {
           document.getElementById('result').innerHTML = response.category
-          updateTable(response.confs)
+          updateFigures(response.confs)
           },
       error: function (response) {
           console.log(response)
@@ -81,19 +109,38 @@ function clearResults () {
   document.getElementById('result').innerHTML = 'Loading results...';
 }
 
-function updateTable(object){
+function updateFigures (json) {
+  // update the chart and table
   var table = document.getElementById("table");
   $("#table").find("tr:not(:first)").remove();
 
+  labels = []
+  data = []
+
   var count = 1
-  for(property in object){
+  for(property in json){
+    // table update
     var row = table.insertRow();
     var pos = row.insertCell(0);
     var name = row.insertCell(1);
     var conf = row.insertCell(2);
 
     pos.innerHTML = count++;
-    name.innerHTML = `${object[property].name}`;
-    conf.innerHTML = `${object[property].conf}%`;
+    name.innerHTML = `${json[property].name}`;
+    conf.innerHTML = `${json[property].conf}%`;
+
+    // chart update
+    var d = json[property].conf
+    var l = json[property].name
+    if (d >= 5) {
+      labels.push(l)
+      data.push(d)
+    }
   }
+  chart.data.datasets[0].data = data
+  chart.data.labels = labels
+  chart.update()
 }
+
+
+
