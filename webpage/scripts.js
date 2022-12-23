@@ -43,7 +43,7 @@ async function uploadFile (base64String) {
   formData.append("filename", 'image')
   formData.append("filedata", base64String)
 
-  $.ajax(concat(apiUrl, '/image'), {
+  $.ajax(apiUrl + '/image', {
       method: 'POST',
       data: formData,
       processData: false,
