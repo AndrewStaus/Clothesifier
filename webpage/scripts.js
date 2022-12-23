@@ -45,7 +45,6 @@ function resizeImage (fullImage, newWidth) {
 
 async function uploadFile (base64String) {
   clearResults();
-  var $alert = $('.alert');
   let formData = new FormData();
   formData.append("filedata", base64String)
 
