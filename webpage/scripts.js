@@ -6,23 +6,20 @@ const chart = new Chart(document.getElementById("chart"), {
   type: 'polarArea',
   data: {
     labels: [],
-    datasets: [
-      {
-        backgroundColor: [
-          "rgba(51,122,183,0.6)",
-          "rgba(92,184,92,0.6)",
-          "rgba(217,83,79,0.6)",
-          "rgba(91,192,222,0.6)",
-          "rgba(240,173,78,0.6)",
-          "rgba(51,122,183,0.6)",
-          "rgba(92,184,92,0.6)",
-          "rgba(217,83,79,0.6)",
-          "rgba(91,192,222,0.6)",
-          "rgba(240,173,78,0.6)",
-
-        ],
-      }
-    ]
+    datasets: [{
+      backgroundColor: [
+        "rgba(51,122,183,0.6)",
+        "rgba(92,184,92,0.6)",
+        "rgba(217,83,79,0.6)",
+        "rgba(91,192,222,0.6)",
+        "rgba(240,173,78,0.6)",
+        "rgba(51,122,183,0.6)",
+        "rgba(92,184,92,0.6)",
+        "rgba(217,83,79,0.6)",
+        "rgba(91,192,222,0.6)",
+        "rgba(240,173,78,0.6)",
+      ]
+    }]
   },
   options: {
     legend: {position: 'bottom'},
@@ -140,6 +137,3 @@ function updateFigures (json) {
   chart.data.labels = labels
   chart.update()
 }
-
-
-
