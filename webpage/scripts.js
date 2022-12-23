@@ -1,28 +1,35 @@
 const apiUrl = 'https://xxlkbgor75nvr7qw256z2xnrdm0ppqai.lambda-url.us-east-2.on.aws'
+const $alert = $('.alert');
+const alertMessage = document.getElementById('alert-message')
 
 async function selectImage () {
-  var $alert = $('.alert');
-  $alert.hide();
+  const photoField = fileSelect.files[0];
   try{
-    const photoField = fileSelect.files[0];
-    const dataUri = await dataUriFromFormField(photoField);
-  
-    const fullImage = document.createElement('img');
-    fullImage.addEventListener('load', () => {
-      const resizedDataUri = resizeImage(fullImage, 380);
-      document.querySelector('#img-preview').src = resizedDataUri;
-      base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
-      uploadFile(base64String)
-    });
-    fullImage.src = dataUri;
+    if (photoField) {
+      $alert.hide();
+      const dataUri = await dataUriFromFormField(photoField);
+    
+      const fullImage = document.createElement('img');
+      fullImage.addEventListener('load', () => {
+        const resizedDataUri = resizeImage(fullImage, 380);
+        document.querySelector('#img-preview').src = resizedDataUri;
+        base64String = resizedDataUri.replace("data:", "").replace(/^.+,/, "");
+        uploadFile(base64String)
+      });
+      if (dataUri.length > 5){
+        fullImage.src = dataUri;
+      } else {
+        throw new Error('Unable to load image')
+      }
+    }
   } catch (err) {
-    $alert.show();
+    alertMessage.innerHTML = err.message
+    $alert.show()
   }
 
 }
 
 function dataUriFromFormField (field) {
-  try{
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.addEventListener('load', () => {
@@ -30,10 +37,6 @@ function dataUriFromFormField (field) {
       });
       reader.readAsDataURL(field);
     });
-  } catch (err) {
-    console.log(err)
-    throw 'Failed to load file'
-  }
 }
 
 function resizeImage (fullImage, newWidth) {
@@ -48,8 +51,7 @@ function resizeImage (fullImage, newWidth) {
     ctx.drawImage(fullImage, 0, 0, canvas.width, canvas.height);
     return canvas.toDataURL();
   } catch (err) {
-    console.log(err)
-    throw 'Failed to resize image'
+    throw new Error('Failed to resize image')
   }
 }
 
@@ -70,7 +72,7 @@ async function uploadFile (base64String) {
           },
       error: function (response) {
           console.log(response)
-          throw 'Failed to upload image'
+          throw new Error('Failed to upload image')
           }
   });
 }
