@@ -22,25 +22,35 @@ async function selectImage () {
 }
 
 function dataUriFromFormField (field) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      resolve(reader.result);
+  try{
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        resolve(reader.result);
+      });
+      reader.readAsDataURL(field);
     });
-    reader.readAsDataURL(field);
-  });
+  } catch (err) {
+    console.log(err)
+    throw 'Failed to load file'
+  }
 }
 
 function resizeImage (fullImage, newWidth) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const aspect = fullImage.width / fullImage.height;
+  try{
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const aspect = fullImage.width / fullImage.height;
 
-  canvas.width = newWidth;
-  canvas.height = newWidth / aspect;
+    canvas.width = newWidth;
+    canvas.height = newWidth / aspect;
 
-  ctx.drawImage(fullImage, 0, 0, canvas.width, canvas.height);
-  return canvas.toDataURL();
+    ctx.drawImage(fullImage, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL();
+  } catch (err) {
+    console.log(err)
+    throw 'Failed to resize image'
+  }
 }
 
 async function uploadFile (base64String) {
@@ -55,7 +65,7 @@ async function uploadFile (base64String) {
       contentType: false,
               
       success: function (response) {
-          document.getElementById('result').innerHTML = data.category
+          document.getElementById('result').innerHTML = response.category
           updateTable(response.confs)
           },
       error: function (response) {
