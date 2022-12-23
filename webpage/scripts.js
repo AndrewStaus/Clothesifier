@@ -26,7 +26,6 @@ async function selectImage () {
     alertMessage.innerHTML = err.message
     $alert.show()
   }
-
 }
 
 function dataUriFromFormField (field) {
