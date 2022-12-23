@@ -40,7 +40,7 @@ async function uploadFile (base64String) {
   clearResults();
   var $alert = $('.alert');
   let formData = new FormData();
-  formData.append("filename", 'image')
+  // formData.append("filename", 'image')
   formData.append("filedata", base64String)
 
   $.ajax(apiUrl + '/image', {
