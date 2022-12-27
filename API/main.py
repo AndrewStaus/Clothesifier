@@ -53,14 +53,15 @@ def predict(interpreter: Interpreter, X: np.ndarray) -> np.ndarray:
 def process(image: io.BytesIO) -> np.ndarray:
     '''## Process Image File
 
-    Process a common image file into a format that the ml model can ingest.
+    Process a standard image file into a format the ml model can ingest.
     - Convert to black and white
     - Pad image so that it is square
     - Resize to 28, 28
     - Invert so that black is 255 and white is 0
-    - Subtract the minimum pixel value from all pixels, so that the minimum value is 0
+    - Subtract the minimum pixel value from all pixels so that the minimum value is 0
     - Normalize all values between 0 and 1 by dividing by the largest value
-    - Reshape to (28, 28, 1) (x, y, chanel)
+    - Reshape to (28, 28, 1) (x, y, channel)
+
     
     ### Arguments:
     - image -- A common image file in format .jpg, .png, .gif... etc.
@@ -107,7 +108,7 @@ class Result(BaseModel):
 async def post_image(filedata: str = Form(...)):
     '''## Post Image
 
-    The normal API endpoint.  Accepts a Base64 encoded image file of a piece of clothing
+    The standard API endpoint.  Accepts a Base64 encoded image file of a piece of clothing
     and will return JSON formatted class prediction for the image.  For best results:
     - The picture should be a 1:1 aspect ratio
     - Clothing should fill as much of the frame as possible
@@ -178,8 +179,8 @@ async def post_image(filedata: str = Form(...)):
 def get_root():
     '''## Get Root
 
-    Returns a welcome message when a get request is received on the root endpoint.
-    This is a simple way to check to see if the API is running.
+    Returns a welcome message when a get request is received on the root endpoint,
+    providing a simple way to check to see if the API is running.
 
     ### Returns:
         - JSON welcome message
