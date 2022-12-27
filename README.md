@@ -5,4 +5,4 @@ Clothesifier is the application created for the fictitious e-commerce company Cl
 
 - The completed application can be accessed at https://andrewstaus.github.io/WGU-Capstone-Clothesifier
 
-- The EDA and model training notebooke can be accessed at https://github.com/AndrewStaus/WGU-Capstone-Clothesifier/blob/main/model%20training/notebook.ipynb
+- The EDA and model training notebook can be accessed at https://github.com/AndrewStaus/WGU-Capstone-Clothesifier/blob/main/model%20training/notebook.ipynb
