@@ -3,6 +3,6 @@ The Computer Science Capstone is the final assignment before completing the Bach
 
 Clothesifier is the application created for the fictitious e-commerce company Clothier, which allows a user to upload an image of a piece of clothing through a REST API and receive a category.
 
-- The completed application can be accessed at https://andrewstaus.github.io/Clothesifier/
+- The completed application can be accessed at https://andrewstaus.github.io/WGU-Capstone-Clothesifier
 
-- The EDA and model training notebooke can be accessed at https://github.com/AndrewStaus/Clothesifier/blob/main/model%20training/notebook.ipynb
+- The EDA and model training notebooke can be accessed at https://github.com/AndrewStaus/WGU-Capstone-Clothesifier/blob/main/model%20training/notebook.ipynb
